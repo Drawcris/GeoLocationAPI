@@ -35,6 +35,19 @@ namespace GeoLocationAPI.Controllers
             return Ok(adress);
         }
 
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var adresses = await _context.Locations
+                .Where(a => a.Adress.Contains(name))  
+                .ToListAsync();
+
+            if (!adresses.Any())
+                return NotFound($"No addresses found with name containing: {name}");
+
+            return Ok(adresses);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddAdress(Location location)
         {
